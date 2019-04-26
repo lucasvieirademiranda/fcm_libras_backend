@@ -228,11 +228,54 @@ exports.delete = (id, done) => {
 
 };
 
-exports.search = (sign, done) => {
+exports.searchBySign = (sign, done) => {
 
     var sql = 'SELECT * FROM SIGNS WHERE UPPER(SIGN) LIKE UPPER(?)'
 
     connection.query(sql, [sign + "%"], function(error, results, fields) {
+
+        if (error)
+        {
+            done({
+                code: 500,
+                message: "Não foi possível acessar a base de dados!!"
+            }, null);
+
+            return;
+        }
+
+        if (results.length > 0)
+        {
+            var data = results.map((result) => {
+
+                return {
+                    id: result.ID,
+                    sign: result.SIGN,
+                    comments: result.COMMENTS
+                };
+
+            });
+    
+            done(null, data);
+        }
+        else
+            done(null, []);
+
+    });
+
+};
+
+exports.searchByCategory = (category, done) => {
+
+    var sql = `
+        SELECT S.ID, S.SIGN, S.COMMENTS FROM SIGNS S 
+        INNER JOIN SIGNS_CATEGORIES SC ON S.ID = SC.ID_SIGN
+        INNER JOIN CATEGORIES C ON SC.ID_CATEGORY = C.ID
+        WHERE UPPER(C.NAME) LIKE UPPER(?) 
+        GROUP BY S.ID
+    `;
+
+    connection.query(sql, [category + "%"], function(error, results, fields) {
 
         if (error)
         {

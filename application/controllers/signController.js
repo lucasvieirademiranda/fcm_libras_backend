@@ -218,11 +218,32 @@ router.delete('/remove/:id', function(request, response) {
 
 });
 
-router.get('/search/:sign', function(request, response) {
+router.get('/searchBySign/:sign', function(request, response) {
 
     var sign = request.params.sign;
 
-    signService.search(sign, function(error, data) {
+    signService.searchBySign(sign, function(error, data) {
+
+        if (error)
+        {
+            response.status(error.code)
+                    .send(error);
+
+            return;
+        }
+
+        response.status(200)
+                .send(data);
+
+    });
+
+});
+
+router.get('/searchByCategory/:category', function(request, response) {
+
+    var category = request.params.category;
+
+    signService.searchByCategory(category, function(error, data) {
 
         if (error)
         {

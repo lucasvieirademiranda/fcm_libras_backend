@@ -3,9 +3,15 @@ var signCategoryRepository = require('../repositories/signCategoryRepository');
 
 var async = require('async');
 
-exports.search = (sign, done) => {
+exports.searchBySign = (sign, done) => {
 
-    signRepository.search(sign, done);
+    signRepository.searchBySign(sign, done);
+
+};
+
+exports.searchByCategory = (category, done) => {
+
+    signRepository.searchByCategory(category, done);
 
 };
 
