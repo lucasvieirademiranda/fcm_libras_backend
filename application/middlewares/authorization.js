@@ -6,7 +6,8 @@ module.exports = function () {
     {
         var urls = [
             '/account/login',
-            '/sign/search',
+            '/sign/searchBySign',
+            '/sign/searchByCategory',
             '/sign/download'
         ];
 
